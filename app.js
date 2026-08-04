@@ -24,6 +24,8 @@ function paintColors(){$('#colorPicks').innerHTML=colors.map(color=>`<button typ
 $('#courseSlot').innerHTML=slots.map((s,i)=>`<option value="${i}">第 ${i+1} 节 · ${s[0]}</option>`).join('');
 grid.addEventListener('click',e=>{const course=e.target.closest('.course');if(course){e.stopPropagation();openCourse(courses.find(x=>x.id===course.dataset.id));return}const cell=e.target.closest('.cell');if(cell)openCourse({day:+cell.dataset.day,slot:+cell.dataset.slot,color:'coral'})});
 $('#addButton').onclick=()=>openCourse();$('#prevWeek').onclick=()=>{weekOffset--;render()};$('#nextWeek').onclick=()=>{weekOffset++;render()};$('#todayButton').onclick=()=>{weekOffset=0;render()};
+$('#closeCourseDialog').onclick=()=>dialog.close();
+$('#cancelCourseDialog').onclick=()=>dialog.close();
 $('#colorPicks').addEventListener('click',e=>{if(e.target.dataset.color){selectedColor=e.target.dataset.color;$('#courseColor').value=selectedColor;paintColors()}});
 $('#courseForm').addEventListener('submit',e=>{e.preventDefault();const id=$('#courseId').value;const course={id:id||crypto.randomUUID(),name:$('#courseName').value.trim(),day:+$('#courseDay').value,slot:+$('#courseSlot').value,teacher:$('#courseTeacher').value.trim(),room:$('#courseRoom').value.trim(),color:$('#courseColor').value};if(!course.name)return;if(id)courses=courses.map(c=>c.id===id?course:c);else{courses=courses.filter(c=>!(c.day===course.day&&c.slot===course.slot));courses.push(course)}persist();dialog.close()});
 $('#deleteButton').onclick=()=>{const id=$('#courseId').value;if(id){courses=courses.filter(c=>c.id!==id);persist();dialog.close()}};

@@ -60,7 +60,7 @@
     <input id="importFile" type="file" accept=".csv,.json,.ics,text/csv,application/json,text/calendar" hidden />
     <dialog id="courseDialog">
       <form method="dialog" id="courseForm">
-        <div class="dialog-header"><div><p class="eyebrow">COURSE DETAILS</p><h2 id="dialogTitle">添加课程</h2></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <div class="dialog-header"><div><p class="eyebrow">COURSE DETAILS</p><h2 id="dialogTitle">添加课程</h2></div><button type="button" class="close-button" id="closeCourseDialog" aria-label="关闭">×</button></div>
         <input type="hidden" id="courseId" />
         <label>课程名称<input id="courseName" required maxlength="24" placeholder="例如：高等数学" /></label>
         <div class="form-row">
@@ -72,7 +72,7 @@
           <label>上课地点<input id="courseRoom" maxlength="20" placeholder="选填" /></label>
         </div>
         <label>课程颜色<div class="color-picks" id="colorPicks"></div><input type="hidden" id="courseColor" value="coral" /></label>
-        <div class="dialog-actions"><button type="button" class="delete-button" id="deleteButton">删除课程</button><span></span><button value="cancel" class="cancel-button">取消</button><button type="submit" class="save-button">保存课程</button></div>
+        <div class="dialog-actions"><button type="button" class="delete-button" id="deleteButton">删除课程</button><span></span><button type="button" id="cancelCourseDialog" class="cancel-button">取消</button><button type="submit" class="save-button">保存课程</button></div>
       </form>
     </dialog>
     <dialog id="importDialog">
