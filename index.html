@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#20252b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>课间 · 我的课表</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="mobile.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#"><span class="brand-mark">K</span><span>课间</span></a>
+        <nav class="nav" aria-label="主导航">
+          <a class="nav-item active" href="#schedule"><span>▦</span>我的课表</a>
+          <a class="nav-item" href="#tasks"><span>✓</span>待办事项 <b id="taskCount">0</b></a>
+          <a class="nav-item" href="#settings"><span>⚙</span>设置</a>
+        </nav>
+        <div class="semester-card">
+          <p>当前学期</p>
+          <strong>2025 · 秋</strong>
+          <span>第 <em id="weekNo">1</em> 周</span>
+        </div>
+        <button class="secondary-button" id="resetButton">恢复示例课表</button>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">MY SCHEDULE</p>
+            <h1>本周课表</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="prevWeek" aria-label="上一周">←</button>
+            <button class="today-button" id="todayButton">今天</button>
+            <button class="icon-button" id="nextWeek" aria-label="下一周">→</button>
+            <button class="import-button" id="importButton">导入</button>
+            <button class="add-button" id="addButton"><span>+</span> 添加课程</button>
+          </div>
+        </header>
+
+        <section class="week-summary" aria-label="本周概览">
+          <div class="date-range" id="dateRange"></div>
+          <div class="summary-stat"><strong id="classHours">0</strong><span>节课程</span></div>
+          <div class="summary-stat"><strong id="freeDays">0</strong><span>天空闲</span></div>
+        </section>
+
+        <section class="schedule-wrap" id="schedule">
+          <div class="schedule-grid" id="scheduleGrid" aria-label="课表"></div>
+        </section>
+      </main>
+    </div>
+
+    <input id="importFile" type="file" accept=".csv,.json,.ics,text/csv,application/json,text/calendar" hidden />
+    <dialog id="courseDialog">
+      <form method="dialog" id="courseForm">
+        <div class="dialog-header"><div><p class="eyebrow">COURSE DETAILS</p><h2 id="dialogTitle">添加课程</h2></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <input type="hidden" id="courseId" />
+        <label>课程名称<input id="courseName" required maxlength="24" placeholder="例如：高等数学" /></label>
+        <div class="form-row">
+          <label>星期<select id="courseDay"><option value="1">周一</option><option value="2">周二</option><option value="3">周三</option><option value="4">周四</option><option value="5">周五</option><option value="6">周六</option><option value="0">周日</option></select></label>
+          <label>第几节<select id="courseSlot"></select></label>
+        </div>
+        <div class="form-row">
+          <label>任课教师<input id="courseTeacher" maxlength="16" placeholder="选填" /></label>
+          <label>上课地点<input id="courseRoom" maxlength="20" placeholder="选填" /></label>
+        </div>
+        <label>课程颜色<div class="color-picks" id="colorPicks"></div><input type="hidden" id="courseColor" value="coral" /></label>
+        <div class="dialog-actions"><button type="button" class="delete-button" id="deleteButton">删除课程</button><span></span><button value="cancel" class="cancel-button">取消</button><button type="submit" class="save-button">保存课程</button></div>
+      </form>
+    </dialog>
+    <dialog id="importDialog">
+      <form method="dialog">
+        <div class="dialog-header"><div><p class="eyebrow">IMPORT SCHEDULE</p><h2>导入课表</h2></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <p class="import-copy">支持 CSV、JSON 或日历（ICS）文件。导入后会合并到现有课表；同一时间的课程将被新课程替换。</p>
+        <div class="import-example"><b>CSV 格式</b><code>课程名称,星期,节次,教师,地点,颜色<br>高等数学,1,1,李老师,明德楼301,coral</code></div>
+        <p class="import-note">星期：周一为 1，周日为 0；节次从 1 开始。颜色可使用 coral、mint、yellow、purple、navy。</p>
+        <div class="dialog-actions"><button type="button" class="download-button" id="downloadTemplate">下载模板</button><span></span><button value="cancel" class="cancel-button">取消</button><button type="button" class="save-button" id="chooseFile">选择文件</button></div>
+      </form>
+    </dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
