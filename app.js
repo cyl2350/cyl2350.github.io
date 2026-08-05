@@ -46,7 +46,6 @@ $('#tasksMobileButton').onclick=$('#tasksButton').onclick;
 $('#closeTaskDialog').onclick=()=>taskDialog.close();$('#cancelTaskDialog').onclick=()=>taskDialog.close();
 $('#taskForm').addEventListener('submit',event=>{event.preventDefault();const id=$('#taskId').value,name=$('#taskName').value.trim();if(!name)return;const task={id:id||crypto.randomUUID(),name,day:+$('#taskDay').value,slot:+$('#taskSlot').value,week:+taskDialog.dataset.week,done:taskDialog.dataset.done==='1'};if(id)tasks=tasks.map(old=>old.id===id?task:old);else{tasks=tasks.filter(old=>!(old.week===task.week&&old.day===task.day&&old.slot===task.slot));tasks.push(task)}persistTasks();taskDialog.close()});
 $('#deleteTaskButton').onclick=()=>{const id=$('#taskId').value;if(id){tasks=tasks.filter(task=>task.id!==id);persistTasks();taskDialog.close()}};
-$('#resetButton').onclick=()=>{courses=sample.map(c=>({...c}));persist()};
 
 const scheduleDialog=$('#scheduleDialog');
 let savedSlotsSnapshot=null;
