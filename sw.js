@@ -1,5 +1,5 @@
-const CACHE='classroom-v7';
-const ASSETS=['./','./index.html','./styles.css','./mobile.css','./phone-layout.css','./settings.css','./phone-settings.css','./todo.css','./app.js','./manifest.webmanifest','./icon.svg'];
+const CACHE='classroom-v8';
+const ASSETS=['./','./index.html','./styles.css','./mobile.css','./phone-layout.css','./settings.css','./phone-settings.css','./todo.css','./phone-aesthetics.css','./app.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS))));
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',event=>event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request))));
