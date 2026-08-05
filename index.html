@@ -12,6 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="mobile.css" />
+    <link rel="stylesheet" href="settings.css" />
+    <link rel="stylesheet" href="phone-settings.css" />
+    <link rel="stylesheet" href="todo.css" />
+    <link rel="stylesheet" href="phone-layout.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -19,12 +23,12 @@
         <a class="brand" href="#"><span class="brand-mark">K</span><span>课间</span></a>
         <nav class="nav" aria-label="主导航">
           <a class="nav-item active" href="#schedule"><span>▦</span>我的课表</a>
-          <a class="nav-item" href="#tasks"><span>✓</span>待办事项 <b id="taskCount">0</b></a>
-          <a class="nav-item" href="#settings"><span>⚙</span>设置</a>
+          <button class="nav-item settings-trigger" id="tasksButton" type="button"><span>✓</span>待办事项 <b id="taskCount">0</b></button>
+          <button class="nav-item settings-trigger" id="settingsButton" type="button"><span>⚙</span>课表设置</button>
         </nav>
         <div class="semester-card">
           <p>当前学期</p>
-          <strong>2025 · 秋</strong>
+          <strong id="termLabel">2025 · 秋</strong>
           <span>第 <em id="weekNo">1</em> 周</span>
         </div>
         <button class="secondary-button" id="resetButton">恢复示例课表</button>
@@ -40,6 +44,8 @@
             <button class="icon-button" id="prevWeek" aria-label="上一周">←</button>
             <button class="today-button" id="todayButton">今天</button>
             <button class="icon-button" id="nextWeek" aria-label="下一周">→</button>
+            <button class="settings-mobile" id="settingsMobileButton" aria-label="课表设置">⚙</button>
+            <button class="tasks-mobile" id="tasksMobileButton" aria-label="待办事项">✓</button>
             <button class="import-button" id="importButton">导入</button>
             <button class="add-button" id="addButton"><span>+</span> 添加课程</button>
           </div>
@@ -58,6 +64,26 @@
     </div>
 
     <input id="importFile" type="file" accept=".csv,.json,.ics,text/csv,application/json,text/calendar" hidden />
+    <dialog id="scheduleDialog">
+      <form method="dialog" id="scheduleForm">
+        <div class="dialog-header"><div><p class="eyebrow">SCHEDULE SETTINGS</p><h2>课表设置</h2></div><button type="button" class="close-button" id="closeScheduleDialog" aria-label="关闭">×</button></div>
+        <p class="import-copy">设置每天最多的课节数，以及每节课的上课时间。</p>
+        <div class="form-row term-fields"><label>学年<input id="termYear" type="number" min="2020" max="2100" value="2025" /></label><label>学期<select id="termSemester"><option value="春">春季学期</option><option value="夏">夏季学期</option><option value="秋" selected>秋季学期</option><option value="冬">冬季学期</option></select></label></div>
+        <div id="slotSettings" class="slot-settings"></div>
+        <button type="button" id="addSlotButton" class="add-slot-button">+ 增加一节课</button>
+        <div class="dialog-actions"><span></span><span></span><button type="button" id="cancelScheduleDialog" class="cancel-button">取消</button><button type="submit" class="save-button">保存设置</button></div>
+      </form>
+    </dialog>
+    <dialog id="taskDialog">
+      <form method="dialog" id="taskForm">
+        <div class="dialog-header"><div><p class="eyebrow">TIME BLOCK TODO</p><h2 id="taskDialogTitle">添加待办</h2></div><button type="button" class="close-button" id="closeTaskDialog" aria-label="关闭">×</button></div>
+        <input type="hidden" id="taskId" />
+        <label>待办内容<input id="taskName" required maxlength="32" placeholder="例如：完成数学作业" /></label>
+        <div class="form-row"><label>星期<select id="taskDay"><option value="1">周一</option><option value="2">周二</option><option value="3">周三</option><option value="4">周四</option><option value="5">周五</option><option value="6">周六</option><option value="0">周日</option></select></label><label>第几节<select id="taskSlot"></select></label></div>
+        <p class="import-note">待办将绑定到当前查看的周次，可直接在课表里点击勾选完成。</p>
+        <div class="dialog-actions"><button type="button" class="delete-button" id="deleteTaskButton">删除</button><span></span><button type="button" id="cancelTaskDialog" class="cancel-button">取消</button><button type="submit" class="save-button">保存待办</button></div>
+      </form>
+    </dialog>
     <dialog id="courseDialog">
       <form method="dialog" id="courseForm">
         <div class="dialog-header"><div><p class="eyebrow">COURSE DETAILS</p><h2 id="dialogTitle">添加课程</h2></div><button type="button" class="close-button" id="closeCourseDialog" aria-label="关闭">×</button></div>
@@ -66,6 +92,10 @@
         <div class="form-row">
           <label>星期<select id="courseDay"><option value="1">周一</option><option value="2">周二</option><option value="3">周三</option><option value="4">周四</option><option value="5">周五</option><option value="6">周六</option><option value="0">周日</option></select></label>
           <label>第几节<select id="courseSlot"></select></label>
+        </div>
+        <div class="form-row week-fields">
+          <label>开始周<input id="courseStartWeek" type="number" min="1" max="30" value="1" /></label>
+          <label>结束周<input id="courseEndWeek" type="number" min="1" max="30" value="20" /></label>
         </div>
         <div class="form-row">
           <label>任课教师<input id="courseTeacher" maxlength="16" placeholder="选填" /></label>

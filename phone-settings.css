@@ -1,0 +1,1 @@
+.settings-mobile{display:none}@media(max-width:800px){.settings-mobile{display:block;order:0;width:38px;height:38px;padding:0;border:1px solid var(--line);border-radius:7px;background:#fff;color:#4b5660;font-size:17px;cursor:pointer}.import-button{order:1}.add-button{order:2}}
